@@ -1,0 +1,32 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  # Puedes definir variables que serán utilizadas en todo el script
+  GIT_SUBMODULE_STRATEGY: recursive
+
+before_script:
+  # Configuración que se ejecutará antes de cada job
+  - apt-get update -qy
+  - apt-get install -y python3 python3-pip
+
+build:
+  stage: build
+  script:
+    - pip3 install -r requirements.txt
+
+test:
+  stage: test
+  script:
+    - python3 run_tests.py
+
+deploy:
+  stage: deploy
+  only:
+    - master  # Este job se ejecutará solo cuando se realicen cambios en la rama master
+  script:
+    - echo "Despliegue a producción"
+    # Puedes agregar comandos específicos para desplegar tu aplicación
+

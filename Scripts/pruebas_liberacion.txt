@@ -1,0 +1,40 @@
+stages:
+  - build
+  - test
+  - release
+  - release_test
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y python3 python3-pip
+
+build:
+  stage: build
+  script:
+    - pip3 install -r requirements.txt
+    # Otros comandos de construcción si es necesario
+
+test:
+  stage: test
+  script:
+    - python3 run_tests.py
+    # Otros comandos de prueba si es necesario
+
+release:
+  stage: release
+  only:
+    - master
+  script:
+    - echo "Desplegar en el entorno de liberación"
+    # Comandos específicos para desplegar en el entorno de liberación
+
+release_test:
+  stage: release_test
+  only:
+    - tags  # Ejecutar solo cuando se etiqueta una versión
+  script:
+    - echo "Pruebas en el entorno de liberación"
+    # Agregar comandos de prueba específicos para el entorno de liberación
